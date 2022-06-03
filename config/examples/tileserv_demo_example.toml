@@ -1,5 +1,5 @@
 # Database connection
-DbConnection = "user=postgres password=password host=postgres dbname=postgres"
+# DbConnection = "user=postgres password=password host=postgres dbname=postgres"
 # Close pooled connections after this interval
 DbPoolMaxConnLifeTime = "1h"
 # Hold no more than this number of connections in the database pool

@@ -5,10 +5,12 @@ services:
   featureserv:
     image: pramsey/pg_featureserv:latest
     command: "--config /app/config.toml"
+    environment:
+      DATABASE_URL: "postgresql://postgres:password@postgres/postgres"
     ports:
       - "9000:9000"
     volumes:
-      - ./featureserv_config.toml:/app/config.toml:ro
+      - ./config/pg_featureserv.toml:/app/config.toml:ro
     depends_on:
       postgres:
         condition: service_healthy
@@ -16,10 +18,12 @@ services:
   tileserv:
     image: pramsey/pg_tileserv
     command: "--config /app/config.toml"
+    environment:
+      DATABASE_URL: "postgresql://postgres:password@postgres/postgres"
     ports:
       - "7800:7800"
     volumes:
-      - ./tileserv_config.toml:/app/config.toml:ro
+      - ./config/pg_tileserv.toml:/app/config.toml:ro
     depends_on:
       postgres:
         condition: service_healthy
