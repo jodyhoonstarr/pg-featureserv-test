@@ -64,19 +64,19 @@
 
 <script>
 
-  var vectorServer = "http://localhost:7800/";
-  var vectorSourceLayer = "public.tl_2021_11_tabblock20";
-  var vectorProps = "?properties=geoid20"
-  var vectorUrl = vectorServer + vectorSourceLayer + "/{z}/{x}/{y}.pbf" + vectorProps;
+  const vectorServer = "http://localhost:7800/";
+  const vectorSourceLayer = "public.tl_2021_11_tabblock20";
+  const vectorProps = "?properties=geoid20"
+  const vectorUrl = vectorServer + vectorSourceLayer + "/{z}/{x}/{y}.pbf" + vectorProps;
 
-  var featureServer = "http://localhost:9000/";
-  var featureSourceLayer = "public.gis_osm_buildings_a_free_1";
-  var featureProps = "?limit=10000" // the default config limit
-  var featureUrl = featureServer+ "/collections/" + featureSourceLayer + "/items.json" + featureProps;
+  const featureServer = "http://localhost:9000/";
+  const featureSourceLayer = "public.gis_osm_buildings_a_free_1";
+  const featureProps = "?limit=10000" // the default config limit
+  const featureUrl = featureServer+ "/collections/" + featureSourceLayer + "/items.json" + featureProps;
 
 
   // pink blocks
-  var vectorStyle = new ol.style.Style({
+  const vectorStyle = new ol.style.Style({
     stroke: new ol.style.Stroke({
       width: 1,
       color: "rgba(255, 0, 255, 0.2)"
@@ -86,7 +86,7 @@
     })
   });
 
-  var vectorLayer = new ol.layer.VectorTile({
+  const vectorLayer = new ol.layer.VectorTile({
     title: 'Census Blocks (Tile)'
     , source: new ol.source.VectorTile({
       format: new ol.format.MVT(),
@@ -96,7 +96,7 @@
   });
 
   // blue buildings
-  var vectorStyleBlue = new ol.style.Style({
+  const vectorStyleBlue = new ol.style.Style({
     stroke: new ol.style.Stroke({
       width: 1,
       color: "#0000ff99"
@@ -106,7 +106,7 @@
     })
   });
 
-  var osmBuildings = new ol.layer.Vector({
+  const osmBuildings = new ol.layer.Vector({
     title: 'OSM Buildings (Feature)'
     , source: new ol.source.Vector({
       url: featureUrl,
@@ -116,14 +116,14 @@
   });
 
 
-  var baseLayer = new ol.layer.Tile({
+  const baseLayer = new ol.layer.Tile({
     title: 'Basemap',
     source: new ol.source.XYZ({
       url: "https://c.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"
     })
   });
 
-  var map = new ol.Map({
+  const map = new ol.Map({
     target: 'map',
     view: new ol.View({
       center: [-8575663, 4707027],
@@ -132,7 +132,7 @@
     layers: [baseLayer, vectorLayer, osmBuildings]
   });
 
-  var layerSwitcher = new ol.control.LayerSwitcher({
+  const layerSwitcher = new ol.control.LayerSwitcher({
     tipLabel: 'Legend', // Optional label for button
     groupSelectStyle: 'children', // Can be 'children' [default], 'group' or 'none'
     active: true, // keep toggled open
@@ -145,7 +145,7 @@
     // lat/lon extent
     const llExtent = ol.proj.transformExtent(extent, 'EPSG:3857', 'EPSG:4326')
     const llExtentString = llExtent.join(',')
-    var source = osmBuildings.getSource();
+    const source = osmBuildings.getSource();
     source.setUrl(featureUrl
         + "&bbox=" + llExtentString)
     source.refresh({force: true});
