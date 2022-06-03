@@ -44,6 +44,16 @@ services:
       timeout: 5s
       retries: 5
 
+  web:
+    image: nginx
+    ports:
+      - "8000:80"
+    volumes:
+      - ./web/index.html:/usr/share/nginx/html/index.html:ro
+    depends_on:
+      - tileserv
+      - featureserv
+
 
 volumes:
   postgres_data:
