@@ -41,9 +41,12 @@
 <body>
 
 <div id="meta">
-  <h2>Our cartographic application !</h2>
+  <h2>Testing query params</h2>
   <ul>
-	<li><a href="https://localhost:9000">pg_featureserv server</a></li>
+	<li><a href="https://localhost:9000">pg_featureserv server</a>
+  </li>
+    <li><a href="https://localhost:7800">pg_tileserv server</a>
+    </li>
 <li>
  <form>
   <label>Radius :</label>
@@ -59,17 +62,17 @@
 
 var vectorServer = "http://localhost:7800/";
 var featureServer = "http://localhost:9000/";
-var vectorSourceLayer = "public.parcelles";
-var vectorProps = "?properties=ogc_fid,id,commune,prefixe,section,numero,contenance,created,updated"
+var vectorSourceLayer = "public.tl_2021_11_tabblock20";
+var vectorProps = "?properties=geoid20"
 var vectorUrl = vectorServer + vectorSourceLayer + "/{z}/{x}/{y}.pbf" + vectorProps;
 
 var vectorStyle = new ol.style.Style({
   stroke: new ol.style.Stroke({
-    width: 2,
-    color: "#ff00ff99"
+    width: 1,
+    color: "rgba(255, 0, 255, 0.2)"
   }),
   fill: new ol.style.Fill({
-    color: "#ff00ff33"
+    color: "rgba(255, 0, 255, 0.1)"
   })
 });
 
@@ -105,15 +108,15 @@ var parcelles_radius = new ol.layer.Vector({
 var baseLayer = new ol.layer.Tile({
   title: 'osm',
   source: new ol.source.XYZ({
-    url: "http://osm.oslandia.io/styles/osm-bright/{z}/{x}/{y}.png"
+    url: "https://c.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"
   })
 });
 
 var map = new ol.Map({
   target: 'map',
   view: new ol.View({
-    center: [260369,6249082],
-    zoom: 16
+    center: [-8575663, 4707027],
+    zoom: 13
   }),
   layers: [baseLayer, vectorLayer, parcelles_radius]
 });
