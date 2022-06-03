@@ -43,11 +43,13 @@
 <body>
 
 <div id="meta">
-  <h2>Testing query params</h2>
+  <h2>Testing pg_feature/tileserv</h2>
+  <p>Zoom to re-query features/tiles</p>
   <ul>
-    <li><a href="https://localhost:9000">pg_featureserv server</a>
+    <li>Buildings 10k feature limit</li>
+    <li><a href="https://localhost:9000">pg_featureserv</a>
     </li>
-    <li><a href="https://localhost:7800">pg_tileserv server</a>
+    <li><a href="https://localhost:7800">pg_tileserv</a>
     </li>
     <li>
       <form>
@@ -133,24 +135,24 @@
   var layerSwitcher = new ol.control.LayerSwitcher({
     tipLabel: 'Legend', // Optional label for button
     groupSelectStyle: 'children', // Can be 'children' [default], 'group' or 'none'
-    startActive: true // keep toggled open
+    active: true, // keep toggled open
   });
   map.addControl(layerSwitcher);
 
-  var popup = new Popup();
-  map.addOverlay(popup);
-
-  map.on('singleclick', function (evt) {
-    var click = ol.proj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
-    var radius = document.getElementById('radius').value;
+  map.on('moveend', function(e) {
+    // projected map extent
+    const extent = map.getView().calculateExtent(map.getSize())
+    // lat/lon extent
+    const llExtent = ol.proj.transformExtent(extent, 'EPSG:3857', 'EPSG:4326')
+    const llExtentString = llExtent.join(',')
     var source = osmBuildings.getSource();
-    source.setUrl(featureServer
-        + "functions/parcelles_radius/items.json?limit=10000"
-        + "&click_lon=" + parseFloat(click[0]).toFixed(4)
-        + "&click_lat=" + parseFloat(click[1]).toFixed(4)
-        + "&radius=" + radius)
+    source.setUrl(featureUrl
+        + "&bbox=" + llExtentString)
     source.refresh({force: true});
   });
+
+
+
 
 </script>
 
