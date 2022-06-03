@@ -42,22 +42,33 @@ DC OSM Buildings (WGS84) [link](https://download.geofabrik.de/north-america/us/d
 shp2pgsql -D -I -s 4326 gis_osm_buildings_a_free_1 | psql $DATABASE_URL
 ```
 
-## Test time filter on buildings table
+## Test time filter on gis_osm_buildings_a_free_1 table
 
 Add datetime column
 ```shell
-psql -h localhost -p 5433 -U postgres postgres -c "
-ALTER TABLE buildings ADD COLUMN created_at TIMESTAMP DEFAULT NOW()"
+psql $DATABASE_URL -c "ALTER TABLE gis_osm_buildings_a_free_1 ADD COLUMN created_at TIMESTAMP DEFAULT NOW()"
 ```
 Set top 100 rows timestamp to yesterday
 ```shell
-psql -h localhost -p 5433 -U postgres postgres -c "
-UPDATE buildings
+psql $DATABASE_URL -c "
+UPDATE gis_osm_buildings_a_free_1
 SET created_at = (created_at - INTERVAL '1 year')::date
 WHERE gid IN (SELECT gid
-             FROM buildings
+             FROM gis_osm_buildings_a_free_1
              ORDER BY gid ASC
-             LIMIT 100);"
+             LIMIT 100);
+UPDATE gis_osm_buildings_a_free_1
+SET created_at = (created_at - INTERVAL '2 year')::date
+WHERE gid IN (SELECT gid
+             FROM gis_osm_buildings_a_free_1
+             ORDER BY gid ASC
+             LIMIT 100 OFFSET 100);
+UPDATE gis_osm_buildings_a_free_1
+SET created_at = (created_at - INTERVAL '3 year')::date
+WHERE gid IN (SELECT gid
+             FROM gis_osm_buildings_a_free_1
+             ORDER BY gid ASC
+             LIMIT 100 OFFSET 200);"
 ```
 
 ## TODO 
