@@ -63,10 +63,15 @@
 <script>
 
   var vectorServer = "http://localhost:7800/";
-  var featureServer = "http://localhost:9000/";
   var vectorSourceLayer = "public.tl_2021_11_tabblock20";
   var vectorProps = "?properties=geoid20"
   var vectorUrl = vectorServer + vectorSourceLayer + "/{z}/{x}/{y}.pbf" + vectorProps;
+
+  var featureServer = "http://localhost:9000/";
+  var featureSourceLayer = "public.gis_osm_buildings_a_free_1";
+  var featureProps = "?limit=10000" // the default config limit
+  var featureUrl = featureServer+ "/collections/" + featureSourceLayer + "/items.json" + featureProps;
+
 
   // pink blocks
   var vectorStyle = new ol.style.Style({
@@ -80,7 +85,7 @@
   });
 
   var vectorLayer = new ol.layer.VectorTile({
-    title: 'Parcelles'
+    title: 'Census Blocks (Tile)'
     , source: new ol.source.VectorTile({
       format: new ol.format.MVT(),
       url: vectorUrl
@@ -99,10 +104,10 @@
     })
   });
 
-  var parcelles_radius = new ol.layer.Vector({
-    title: 'Parcelles radius'
+  var osmBuildings = new ol.layer.Vector({
+    title: 'OSM Buildings (Feature)'
     , source: new ol.source.Vector({
-      url: featureServer + "functions/parcelles_radius/items.json?limit=10000",
+      url: featureUrl,
       format: new ol.format.GeoJSON()
     }),
     style: vectorStyleBlue
@@ -110,7 +115,7 @@
 
 
   var baseLayer = new ol.layer.Tile({
-    title: 'osm',
+    title: 'Basemap',
     source: new ol.source.XYZ({
       url: "https://c.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"
     })
@@ -122,12 +127,13 @@
       center: [-8575663, 4707027],
       zoom: 13
     }),
-    layers: [baseLayer, vectorLayer, parcelles_radius]
+    layers: [baseLayer, vectorLayer, osmBuildings]
   });
 
   var layerSwitcher = new ol.control.LayerSwitcher({
     tipLabel: 'Legend', // Optional label for button
-    groupSelectStyle: 'children' // Can be 'children' [default], 'group' or 'none'
+    groupSelectStyle: 'children', // Can be 'children' [default], 'group' or 'none'
+    startActive: true // keep toggled open
   });
   map.addControl(layerSwitcher);
 
@@ -137,7 +143,7 @@
   map.on('singleclick', function (evt) {
     var click = ol.proj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
     var radius = document.getElementById('radius').value;
-    var source = parcelles_radius.getSource();
+    var source = osmBuildings.getSource();
     source.setUrl(featureServer
         + "functions/parcelles_radius/items.json?limit=10000"
         + "&click_lon=" + parseFloat(click[0]).toFixed(4)
