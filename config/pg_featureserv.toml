@@ -82,4 +82,6 @@ LimitMax = 10000
 
 [Website]
 # URL for the map view basemap
-BasemapUrl = "http://a.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png"
+# BasemapUrl = "http://a.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png"
+# A less laggy basemap
+BasemapUrl = "https://c.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"
