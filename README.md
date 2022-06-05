@@ -50,28 +50,15 @@ Add datetime column
 ```shell
 psql $DATABASE_URL -c "ALTER TABLE gis_osm_buildings_a_free_1 ADD COLUMN created_at TIMESTAMP DEFAULT NOW()"
 ```
-Set top 100 rows timestamp to yesterday
+For testing: set top 100 rows to last year timestamp, 100-200 to 2 years ago, 200-300 to 3 years ago.
 ```shell
-psql $DATABASE_URL -c "
-UPDATE gis_osm_buildings_a_free_1
-SET created_at = (created_at - INTERVAL '1 year')::date
-WHERE gid IN (SELECT gid
-             FROM gis_osm_buildings_a_free_1
-             ORDER BY gid ASC
-             LIMIT 100);
-UPDATE gis_osm_buildings_a_free_1
-SET created_at = (created_at - INTERVAL '2 year')::date
-WHERE gid IN (SELECT gid
-             FROM gis_osm_buildings_a_free_1
-             ORDER BY gid ASC
-             LIMIT 100 OFFSET 100);
-UPDATE gis_osm_buildings_a_free_1
-SET created_at = (created_at - INTERVAL '3 year')::date
-WHERE gid IN (SELECT gid
-             FROM gis_osm_buildings_a_free_1
-             ORDER BY gid ASC
-             LIMIT 100 OFFSET 200);"
+psql $DATABASE_URL -c -f ./sql/modify_created_at.sql
 ```
 
-## TODO 
-- [ ] test datetime/filtering
+## Feature Layer Functions
+
+Expose a [buildings by year function](http://localhost:9000/functions.html) that queries 
+on the timestamp set above.
+```shell
+psql $DATABASE_URL -f ./sql/buildings_by_year.sql
+```
