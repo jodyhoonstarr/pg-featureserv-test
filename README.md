@@ -55,6 +55,12 @@ For testing: set top 100 rows to last year timestamp, 100-200 to 2 years ago, 20
 psql $DATABASE_URL -c -f ./sql/modify_created_at.sql
 ```
 
+## CQL Filtering [link](https://www.crunchydata.com/blog/cql-filtering-in-pg_featureserv)
+
+> **IMPORTANT:** CQL casts all data into int/text. Use with caution. 
+> 
+Example [filter=created_at = '...'](http://localhost:9000/collections/public.gis_osm_buildings_a_free_1/items.json?filter=created_at%20%3D%20%272022-06-03%2016%3A20%3A10.60845%27)
+
 ## Feature Layer Functions
 
 Expose a [buildings by year function](http://localhost:9000/functions.html) that queries 
