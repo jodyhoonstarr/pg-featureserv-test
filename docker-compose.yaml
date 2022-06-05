@@ -30,6 +30,7 @@ services:
 
   postgres:
     image: postgis/postgis:13-3.2-alpine
+    command: ["postgres", "-c", "log_statement=all"]
     ports:
       - "5433:5432"
     environment:
