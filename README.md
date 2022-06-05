@@ -12,6 +12,8 @@ Open browser to
 [featureserv (localhost:9000)](http://localhost:5000)
 or
 [tileserv (localhost:7800)](http://localhost:7800)
+or
+[web map (localhost:8000)](http://localhost:9000)
 
 To access the db directly:
 ```shell

@@ -67,13 +67,12 @@
   const vectorServer = "http://localhost:7800/";
   const vectorSourceLayer = "public.tl_2021_11_tabblock20";
   const vectorProps = "?properties=geoid20"
-  const vectorUrl = vectorServer + vectorSourceLayer + "/{z}/{x}/{y}.pbf" + vectorProps;
+  const vectorUrl = `${vectorServer}${vectorSourceLayer}/{z}/{x}/{y}.pbf${vectorProps}`;
 
   const featureServer = "http://localhost:9000/";
   const featureSourceLayer = "public.gis_osm_buildings_a_free_1";
   const featureProps = "?limit=10000" // the default config limit
-  const featureUrl = featureServer+ "/collections/" + featureSourceLayer + "/items.json" + featureProps;
-
+  const featureUrl = `${featureServer}/collections/${featureSourceLayer}/items.json${featureProps}`;
 
   // pink blocks
   const vectorStyle = new ol.style.Style({
@@ -135,6 +134,7 @@
   const layerSwitcher = new ol.control.LayerSwitcher({
     tipLabel: 'Legend', // Optional label for button
     groupSelectStyle: 'children', // Can be 'children' [default], 'group' or 'none'
+    startActive: true,
     active: true, // keep toggled open
   });
   map.addControl(layerSwitcher);
@@ -146,8 +146,7 @@
     const llExtent = ol.proj.transformExtent(extent, 'EPSG:3857', 'EPSG:4326')
     const llExtentString = llExtent.join(',')
     const source = osmBuildings.getSource();
-    source.setUrl(featureUrl
-        + "&bbox=" + llExtentString)
+    source.setUrl(`${featureUrl}&bbox=${llExtentString}`);
     source.refresh({force: true});
   });
 
