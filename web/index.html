@@ -158,8 +158,9 @@
     console.log(d)
 
     // cql filtering
+    // NOTE: all non-text/int properties are cast to text
+    // so this is only valid for certain properties
     // https://www.crunchydata.com/blog/cql-filtering-in-pg_featureserv
-    // e.g. cql filter equal w/ urlencode via https://www.urlencoder.org/
 
     // ?filter=gid = 49447
     // http://localhost:9000/collections/public.gis_osm_buildings_a_free_1/items.json?filter=gid%20%3D%2049447
@@ -173,7 +174,6 @@
     // created_at BETWEEN '2021-01-01 00:00:00.00000' AND '2022-01-01 00:00:00.00000'
     // http://localhost:9000/collections/public.gis_osm_buildings_a_free_1/items.json?filter=created_at%20BETWEEN%20%272021-01-01%2000%3A00%3A00.00000%27%20AND%20%272022-01-01%2000%3A00%3A00.00000%27&limit=1
 
-    // NOTE: cql filtering is
   }
 
 
